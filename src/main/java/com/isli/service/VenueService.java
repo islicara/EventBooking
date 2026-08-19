@@ -68,6 +68,14 @@ public class VenueService {
         return venueRepository.findAll().stream().map(EntityMapper::toResponse).toList();
     }
 
+    @Transactional
+    public List<VenueDTO> getByCity(String city) {
+        log.trace("Fetching venues in city='{}'", city);
+        return venueRepository.findByCity(city).stream()
+                .map(EntityMapper::toResponse)
+                .toList();
+    }
+
     private Venue findOrThrow(Long id) {
         return venueRepository.findById(id).orElseThrow(() -> ResourceNotFoundException.of("Venue", id));
     }

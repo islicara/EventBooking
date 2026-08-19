@@ -21,6 +21,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     Optional<Booking> findByUserIdAndEventIdAndStatus(Long userId, Long eventId, BookingStatus status);
 
     @Query("SELECT COALESCE(SUM(b.seatsBooked), 0) FROM Booking b " +
-            "WHERE b.event.id = :eventId AND b.status = com.isli.entity.BookingStatus.CONFIRMED")
-    Integer sumConfirmedSeats(@Param("eventId") Long eventId);
+            "WHERE b.event.id = :eventId AND b.status = :status")
+    Integer sumConfirmedSeats(@Param("eventId") Long eventId, @Param("status") BookingStatus status);
 }

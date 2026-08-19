@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -157,6 +158,14 @@ public class EventService {
     @Transactional
     public Page<EventDTO> getAllForAdmin(Pageable pageable) {
         return eventRepository.findAll(pageable).map(this::toResponse);
+    }
+
+    @Transactional
+    public List<EventDTO> getByStatus(EventStatus status) {
+        log.trace("Fetching events with status={}", status);
+        return eventRepository.findByStatus(status).stream()
+                .map(this::toResponse)
+                .toList();
     }
 
     private Event findEventForOwner(Long id, String organizerUsername) {

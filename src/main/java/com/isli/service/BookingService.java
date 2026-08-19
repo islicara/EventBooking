@@ -65,6 +65,13 @@ public class BookingService {
                     "Only " + event.getAvailableSeats() + " seat(s) left - join the waitlist instead");
         }
 
+        Integer confirmedSum = bookingRepository.sumConfirmedSeats(event.getId(), BookingStatus.CONFIRMED);
+        if (confirmedSum + request.getSeatsBooked() > event.getTotalSeats()) {
+            log.error("Seat count mismatch on event {}: confirmedSum={}, totalSeats={}, availableSeats claimed={}",
+                    event.getId(), confirmedSum, event.getTotalSeats(), event.getAvailableSeats());
+            throw new SeatsUnavailableException("Seat availability could not be confirmed - please try again");
+        }
+
         event.setAvailableSeats(event.getAvailableSeats() - request.getSeatsBooked());
 
         Booking booking = Booking.builder()

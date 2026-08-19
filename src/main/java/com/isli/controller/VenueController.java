@@ -47,4 +47,9 @@ public class VenueController {
     public ResponseEntity<List<VenueDTO>> getAll() {
         return ResponseEntity.ok(venueService.getAll());
     }
+
+    @GetMapping(params = "city")
+    public ResponseEntity<List<VenueDTO>> getByCity(@RequestParam String city) {
+        return ResponseEntity.ok(venueService.getByCity(city));
+    }
 }

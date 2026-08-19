@@ -40,6 +40,14 @@ public class CategoryService {
     public CategoryDTO update(Long id, CategoryDTO request) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> ResourceNotFoundException.of("Category", id));
+
+        categoryRepository.findCategoryByName(request.getName())
+                .filter(existing -> !existing.getId().equals(id))
+                .ifPresent(conflict -> {
+                    log.warn("Rejected rename: category '{}' already used by id={}", request.getName(), conflict.getId());
+                    throw new DuplicateResourceException("Category already exists: " + request.getName());
+                });
+
         log.debug("Renaming category {} from '{}' to '{}'", id, category.getName(), request.getName());
         category.setName(request.getName());
         log.info("Updated category {}", id);

@@ -3,6 +3,7 @@ package com.isli.controller;
 import com.isli.dto.BookingDTO;
 import com.isli.dto.EventDTO;
 import com.isli.dto.UserDTO;
+import com.isli.entity.EventStatus;
 import com.isli.service.BookingService;
 import com.isli.service.EventService;
 import com.isli.service.UserService;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "Admin", description = "Admin oversight - users, all events, all bookings")
 @RestController
@@ -57,5 +60,10 @@ public class AdminController {
     @PatchMapping("/bookings/{id}/cancel")
     public ResponseEntity<BookingDTO> cancelAnyBooking(@PathVariable Long id, Authentication auth) {
         return ResponseEntity.ok(bookingService.cancel(id, auth.getName(), true));
+    }
+
+    @GetMapping("/events/by-status")
+    public ResponseEntity<List<EventDTO>> getEventsByStatus(@RequestParam EventStatus status) {
+        return ResponseEntity.ok(eventService.getByStatus(status));
     }
 }
