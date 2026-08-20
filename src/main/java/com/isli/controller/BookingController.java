@@ -6,6 +6,7 @@ import com.isli.entity.BookingStatus;
 import com.isli.service.BookingService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -35,7 +36,7 @@ public class BookingController {
     @PreAuthorize("hasRole('ATTENDEE')")
     @GetMapping("/me")
     public ResponseEntity<Page<BookingDTO>> getMyBookings(
-            @RequestParam(required = false) BookingStatus status, Authentication auth, Pageable pageable) {
+            @RequestParam(required = false) BookingStatus status, Authentication auth, @ParameterObject Pageable pageable) {
         return ResponseEntity.ok(bookingService.getMyBookings(auth.getName(), status, pageable));
     }
 

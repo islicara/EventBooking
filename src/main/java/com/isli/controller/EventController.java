@@ -6,6 +6,7 @@ import com.isli.dto.EventSearchCriteria;
 import com.isli.service.EventService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -37,7 +38,7 @@ public class EventController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to,
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice,
-            Pageable pageable) {
+            @ParameterObject Pageable pageable) {
 
         EventSearchCriteria criteria = EventSearchCriteria.builder()
                 .city(city)
@@ -84,7 +85,7 @@ public class EventController {
 
     @PreAuthorize("hasRole('ORGANIZER')")
     @GetMapping("/organizer/me")
-    public ResponseEntity<Page<EventDTO>> getMyEvents(Authentication auth, Pageable pageable) {
+    public ResponseEntity<Page<EventDTO>> getMyEvents(Authentication auth, @ParameterObject Pageable pageable) {
         return ResponseEntity.ok(eventService.getByOrganizer(auth.getName(), pageable));
     }
 }

@@ -5,6 +5,7 @@ import com.isli.dto.ReviewRequestDTO;
 import com.isli.service.ReviewService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -28,8 +29,8 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.CREATED).body(reviewService.create(request, auth.getName()));
     }
 
-    @GetMapping("/api//events/{eventId}/reviews")
-    public ResponseEntity<Page<ReviewDTO>> getForEvent(@PathVariable Long eventId, Pageable pageable) {
+    @GetMapping("/api/events/{eventId}/reviews")
+    public ResponseEntity<Page<ReviewDTO>> getForEvent(@PathVariable Long eventId, @ParameterObject Pageable pageable) {
         return ResponseEntity.ok(reviewService.getForEvent(eventId, pageable));
     }
 }

@@ -8,6 +8,7 @@ import com.isli.service.BookingService;
 import com.isli.service.EventService;
 import com.isli.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<Page<UserDTO>> listUsers(Pageable pageable) {
+    public ResponseEntity<Page<UserDTO>> listUsers(@ParameterObject Pageable pageable) {
         return ResponseEntity.ok(userService.listUsers(pageable));
     }
 
@@ -48,12 +49,12 @@ public class AdminController {
     }
 
     @GetMapping("/events")
-    public ResponseEntity<Page<EventDTO>> listAllEvents(Pageable pageable) {
+    public ResponseEntity<Page<EventDTO>> listAllEvents(@ParameterObject Pageable pageable) {
         return ResponseEntity.ok(eventService.getAllForAdmin(pageable));
     }
 
     @GetMapping("/bookings")
-    public ResponseEntity<Page<BookingDTO>> listAllBookings(Pageable pageable) {
+    public ResponseEntity<Page<BookingDTO>> listAllBookings(@ParameterObject Pageable pageable) {
         return ResponseEntity.ok(bookingService.getAllForAdmin(pageable));
     }
 
