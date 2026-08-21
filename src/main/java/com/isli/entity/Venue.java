@@ -3,6 +3,9 @@ package com.isli.entity;
 import jakarta.persistence.*;
 import lombok.Builder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Builder
 @Entity
 @Table(name = "venues")
@@ -26,12 +29,13 @@ public class Venue {
 
     public Venue() {}
 
-    public Venue(Long id, String name, String address, String city, Integer capacity) {
+    public Venue(Long id, String name, String address, String city, Integer capacity, List<Event> events) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.city = city;
         this.capacity = capacity;
+        this.events = events;
     }
 
     public Long getId() {
@@ -72,5 +76,17 @@ public class Venue {
 
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
+    }
+
+    @OneToMany(mappedBy = "venue", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Event> events = new ArrayList<>();
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
 }

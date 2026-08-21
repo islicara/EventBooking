@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Entity
@@ -25,13 +27,14 @@ public class Booking {
 
     public Booking() {}
 
-    public Booking(Long id, Integer seatsBooked, BookingStatus status, LocalDateTime bookingDate, User user, Event event) {
+    public Booking(Long id, Integer seatsBooked, BookingStatus status, LocalDateTime bookingDate, User user, Event event, List<Review> reviews) {
         this.id = id;
         this.seatsBooked = seatsBooked;
         this.status = status;
         this.bookingDate = bookingDate;
         this.user = user;
         this.event = event;
+        this.reviews = reviews;
     }
 
     public Long getId() {
@@ -89,4 +92,16 @@ public class Booking {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
+
+    @OneToMany(mappedBy = "booking", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Review> reviews = new ArrayList<>();
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 }

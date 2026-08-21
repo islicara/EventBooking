@@ -5,7 +5,9 @@ import lombok.Builder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -43,7 +45,7 @@ public class Event {
 
     public Event() {}
 
-    public Event(Long id, String title, String description, LocalDateTime startDateTime, LocalDateTime endDateTime, BigDecimal price, Integer totalSeats, Integer availableSeats, EventStatus status, Venue venue, User organizer, Set<Category> categories) {
+    public Event(Long id, String title, String description, LocalDateTime startDateTime, LocalDateTime endDateTime, BigDecimal price, Integer totalSeats, Integer availableSeats, EventStatus status, Venue venue, User organizer, Set<Category> categories, List<Booking> bookings, List<Review> reviews, List<Waitlist> waitlistEntries) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -56,6 +58,9 @@ public class Event {
         this.venue = venue;
         this.organizer = organizer;
         this.categories = categories;
+        this.bookings = bookings;
+        this.reviews = reviews;
+        this.waitlistEntries = waitlistEntries;
     }
 
     public Long getId() {
@@ -170,4 +175,40 @@ public class Event {
     )
     @Builder.Default
     private Set<Category> categories = new HashSet<>();
+
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Booking> bookings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Waitlist> waitlistEntries = new ArrayList<>();
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public List<Waitlist> getWaitlistEntries() {
+        return waitlistEntries;
+    }
+
+    public void setWaitlistEntries(List<Waitlist> waitlistEntries) {
+        this.waitlistEntries = waitlistEntries;
+    }
 }
